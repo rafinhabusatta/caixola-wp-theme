@@ -1,5 +1,5 @@
 body.login {
-  background: green;
+  background: var(--orange-500);
 }
 
 .login h1 a {

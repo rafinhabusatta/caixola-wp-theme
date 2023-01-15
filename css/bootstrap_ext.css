@@ -1,22 +1,22 @@
 /* Bootstrap Extention Classes */
 
 body {
-  --blue-800: #0d1a26;
-  --blue-500: #1c2f40;
-  --blue-300: #284259;
-  --blue-100: #516373;
-  --gray: #eaeaea;
+  --orange-500: #f29105;
+  --orange-300: #f5a909;
+  --organge-200: #f9b200;
+  --orange-100: #fdd512;
+  --gray: #525252;
   --white: #fff;
-  --gold: #a48111;
 }
 
 a {
   text-decoration: none;
-  color: var(--blue-800);
+  color: var(--white);
+  border: none;
 }
 
 a:hover {
-  color: var(--blue-500);
+  color: var(--orange-300);
 }
 
 .search-overlay {
@@ -29,28 +29,24 @@ a:hover {
   z-index: 999;
 }
 
-.bg-blue-light {
-  background-color: var(--blue-100);
+.bg-orange-light {
+  background-color: var(--orange-100);
 }
 
-.bg-blue {
-  background-color: var(--blue-300);
+.bg-orange {
+  background-color: var(--orange-200);
 }
 
-.bg-blue-medium {
-  background-color: var(--blue-500);
+.bg-orange-medium {
+  background-color: var(--orange-300);
 }
 
-.bg-blue-dark {
-  background-color: var(--blue-800);
+.bg-orange-dark {
+  background-color: var(--orange-500);
 }
 
 .bg-gray {
   background-color: var(--gray);
-}
-
-.btn-al-advogados {
-  width: 255px;
 }
 
 .btn-gold {
@@ -59,7 +55,7 @@ a:hover {
 }
 
 .btn-dark {
-  background-color: var(--blue-800);
+  background-color: var(--orange-500);
   color: var(--white);
 }
 
@@ -67,12 +63,8 @@ a:hover {
   color: var(--white);
 }
 
-.text-gold {
-  color: var(--gold);
-}
-
-.text-blue {
-  color: var(--blue-500);
+.text-orange {
+  color: var(--orange-500);
 }
 
 .text-justify {

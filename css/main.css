@@ -1,0 +1,11 @@
+.title {
+  font-size: 90px;
+  font-weight: 700;
+  color: var(--orange-500);
+}
+
+.title-border {
+  border: 5px solid var(--orange-500);
+  display: inline-block;
+  width: 100px;
+}
