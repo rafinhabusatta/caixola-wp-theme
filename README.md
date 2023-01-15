@@ -1,0 +1,1 @@
+# caixola-wp-theme
