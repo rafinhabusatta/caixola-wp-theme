@@ -7,8 +7,8 @@
   <?php wp_head(); ?>
 </head>
 <body class="<?php body_class(); ?>">
-  <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg">
       <?php 
         // wp_nav_menu(array(
         //   'theme_location' => 'headerMenuLocation',

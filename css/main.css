@@ -1,11 +1,85 @@
+/* Titles */
+
 .title {
   font-size: 90px;
   font-weight: 700;
   color: var(--orange-500);
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .title-border {
   border: 5px solid var(--orange-500);
   display: inline-block;
   width: 100px;
+}
+
+.home-banner {
+  height: 620px;
+  background-image: url(../images/bg-homeBanner.jpg);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.wrap {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(52, 52, 52, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-title-border {
+  border: 3px solid var(--white);
+  display: inline-block;
+  width: 50%;
+  height: 5px;
+}
+
+.dot-top,
+.dot-bottom {
+  background: var(--orange-500);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  z-index: 1;
+}
+
+.dot-top {
+  margin-right: -25px;
+}
+
+.dot-bottom {
+  margin-left: -5px;
+}
+
+/* Buttons */
+
+.btn-caixola {
+  border: 1px solid var(--orange-500);
+  color: var(--orange-500);
+}
+
+.btn-caixola:hover {
+  background-color: var(--orange-500);
+  color: var(--white);
+}
+
+/* Portfolio cards */
+
+.main-portfolio-card {
+  height: 360px;
+}
+
+.portfolio-card {
+  height: 250px;
+}
+
+.bg-portfolio-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
