@@ -7,7 +7,7 @@
   <?php wp_head(); ?>
 </head>
 <body class="<?php body_class(); ?>">
-  <header class="sticky-top">
+  <header class="sticky-top main-menu">
     <nav class="navbar navbar-expand-lg">
       <?php 
         // wp_nav_menu(array(

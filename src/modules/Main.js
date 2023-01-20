@@ -1,22 +1,21 @@
 class Main {
   constructor() {
-    // this.element = document.getElementsByTagName('header')
-    // this.height = this.heightElement(element)
+    this.element = document.querySelector('.main-menu')
+    this.height = this.heightElement(this.element)
     this.events()
   }
 
   events() {
-    // this.homeBannerHeight(height)
-    console.log('Main class loaded')
+    this.homeBannerHeight(this.height)
   }
 
   // Methods
   heightElement(element) {
-    return element.offseHeight
+    return element.offsetHeight
   }
 
   homeBannerHeight(height) {
-    const banner = document.querySelector('home-banner')
+    const banner = document.querySelector('.home-banner')
     banner.style = `margin-top: -${height}px`
   }
 }
