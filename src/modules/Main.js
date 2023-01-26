@@ -7,6 +7,11 @@ class Main {
 
   events() {
     this.homeBannerHeight(this.height)
+    const observer = new IntersectionObserver(
+      ([e]) => e.target.classList.toggle('fixed', e.intersectionRatio < 1),
+      { threshold: [1] }
+    )
+    observer.observe(this.element)
   }
 
   // Methods

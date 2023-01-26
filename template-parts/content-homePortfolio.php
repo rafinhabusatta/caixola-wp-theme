@@ -28,4 +28,4 @@
   </div>
   <?php } wp_reset_postdata(); ?>
 </div>
-<a href="#" class="btn btn-caixola mt-4">Veja mais</a>
+<a href="<?php echo get_post_type_archive_link('portfolio'); ?>" class="btn btn-caixola mt-4">Veja mais</a>
