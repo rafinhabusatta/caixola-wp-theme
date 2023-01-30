@@ -6,7 +6,7 @@
   <div class="container">
     <div class="row mt-5 pt-3 text-center">
       <div class="col-12">
-        <h2 class="title"><span class="title-border-lg"></span>Portfolio</h2>
+        <h2 class="title"><span class="title-border-lg border-orange-dark"></span>Portfolio</h2>
         <?php get_template_part('template-parts/content', 'homePortfolio');?>
       </div>
     </div>

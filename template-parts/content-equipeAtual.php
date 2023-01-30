@@ -20,7 +20,7 @@
                 while($Equipe->have_posts()) {
                   $Equipe->the_post();
 
-                  if($count > 6) {
+                  if($count > 5) {
                     $CI = '</div><div class="carousel-item text-center">';
                     $count = 0;
                   } else {
@@ -43,7 +43,7 @@
                         } else if ($professor == 'false') { 
                           echo 'Bolsista'; 
                         } else {
-                          echo 'Professor';
+                          echo 'Professor(a)';
                         }
                       ?>
                     </h4>

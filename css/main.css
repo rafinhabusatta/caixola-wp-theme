@@ -7,7 +7,9 @@ body {
   --orange-100: #efb35e;
   --gray-500: #525252;
   --gray-300: #63758a;
+  --gray-200: #a6a6a6;
   --gray-100: #f2f2f2;
+  --yellow: #fdd512;
   --white: #fff;
 }
 
@@ -27,6 +29,14 @@ ul {
 
 li {
   list-style: none;
+}
+
+.carousel-control-prev {
+  left: -110px;
+}
+
+.carousel-control-next {
+  right: -110px;
 }
 
 .search-overlay {
@@ -52,10 +62,45 @@ li {
   justify-content: center;
 }
 
+.border-orange-dark {
+  border: 5px solid var(--orange-500);
+}
+
+.border-orange-light {
+  border: 5px solid var(--orange-100);
+}
+
+.border-orange-lighter {
+  border: 5px solid var(--orange-200);
+}
+
+.border-orange-medium {
+  border: 5px solid var(--orange-300);
+}
+
+.border-gray-dark {
+  border: 5px solid var(--gray-500);
+}
+
+.border-gray-light {
+  border: 5px solid var(--gray-100);
+}
+
+.border-gray-medium {
+  border: 5px solid var(--gray-300);
+}
+
+.border-white {
+  border: 5px solid var(--white);
+}
+
+.border-yellow {
+  border: 5px solid var(--yellow);
+}
+
 .title-border-sm,
 .title-border-md,
 .title-border-lg {
-  border: 5px solid var(--orange-500);
   display: inline-block;
   margin-right: 12px;
 }
@@ -166,7 +211,7 @@ li {
   color: var(--white);
   padding: 10px;
   border-radius: 10px !important;
-  width: 197px;
+  //width: 197px;
   display: inline-block;
 }
 

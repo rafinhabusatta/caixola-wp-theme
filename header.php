@@ -11,7 +11,7 @@
     if (is_page('home')) {
       $bg = 'sticky-top main-menu none';
     } else {
-      $bg = 'sticky-top main-menu bg-gray';
+      $bg = 'sticky-top main-menu bg-gray-light';
     }
   ?>
   <header class="<?php echo $bg; ?>">
@@ -36,13 +36,13 @@
         <div class="collapse navbar-collapse my-lg-auto main-menu-ul" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Portfolio</a>
+              <a class="nav-link active" aria-current="page" href="<?php echo get_post_type_archive_link('portfolio'); ?>">Portfolio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo site_url('/quem-somos'); ?>">Quem Somos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Fale Conosco</a>
+              <a class="nav-link" href="<?php echo site_url('/contato'); ?>">Fale Conosco</a>
             </li>
           </ul>
           <form class="d-flex" role="search">
