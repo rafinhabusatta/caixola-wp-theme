@@ -32,6 +32,7 @@
                   $professor = get_field('professor');
                   
                   if($membroAtual == 'true') {
+                    $count ++;
               ?>
                   <div class="d-inline-block text-center ms-4">
                       <img src="<?php echo get_field('foto_de_perfil'); ?>" class="d-inline-block rounded-circle bg-gray" alt="..." width="150" height="150">
@@ -51,8 +52,7 @@
               <?php
                   }
                 echo $CI;
-              
-                $count++; } ?>
+               } ?>
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">

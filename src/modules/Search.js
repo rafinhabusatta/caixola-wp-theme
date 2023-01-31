@@ -54,7 +54,7 @@ class Search {
     try {
       const response = await axios.get(
         data.root_url +
-          '/wp-json/YOURTHEMEPATH/v1/search?term=' +
+          '/wp-json/caixola/v1/search?term=' +
           this.searchField.value
       )
       const results = response.data

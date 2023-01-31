@@ -6,7 +6,15 @@ class Search {
     this.addSearchHTML()
     this.resultsDiv = document.querySelector('#search-results')
     this.searchOverlay = document.querySelector('.search-overlay')
-    this.searchField = document.querySelector('#port-search-term')
+    this.searchData = document.querySelector('#data')
+    this.SearchEquipe = document.querySelector('#equipe')
+    this.SearchProjeto = document.querySelector('#projeto')
+    this.searchField = {
+      equipe: this.SearchEquipe,
+      projeto: this.SearchProjeto,
+      data: this.searchData
+    }
+
     this.events()
     this.isOverlayOpen = false
     this.isSpinnerVisible = false
@@ -21,9 +29,9 @@ class Search {
 
   // 3. methods (function, action...)
   typingLogic() {
-    if (this.searchField.value != this.previousValue) {
+    if (this.searchField.projeto.value != this.previousValue) {
       clearTimeout(this.typingTimer)
-      if (this.searchField.value) {
+      if (this.searchField.projeto.value) {
         if (!this.isSpinnerVisible) {
           this.resultsDiv.innerHTML = `
             <div class="d-flex justify-content-center">
@@ -42,14 +50,14 @@ class Search {
         this.isSpinnerVisible = false
       }
     }
-    this.previousValue = this.searchField.value // get the value of the search field
+    this.previousValue = this.searchField.projeto.value // get the value of the search field
   }
 
   async getResults() {
     try {
       const response = await axios.get(
         data.root_url +
-          '/wp-json/YOURTHEMEPATH/v1/search?term=' +
+          '/wp-json/caixola/v1/search?term=' +
           this.searchField.value
       )
       const results = response.data
@@ -57,13 +65,13 @@ class Search {
       this.resultsDiv.innerHTML = `
         <div class="row">
           <div class="col-12">
-            <h2>Informações Gerais</h2>
+            <h2>Resultados obtidos</h2>
             ${
-              results.generalInfo.length
+              results.portfolio.length
                 ? '<ul class="results-list">'
                 : '<p>Não há resultados</p>'
             }
-              ${results.generalInfo
+              ${results.portfolio
                 .map(
                   item =>
                     `<li>
@@ -78,7 +86,7 @@ class Search {
                     </li>`
                 )
                 .join('')}
-            ${results.generalInfo.length ? '</ul>' : ''}
+            ${results.portfolio.length ? '</ul>' : ''}
           </div>
         </div>
       `
