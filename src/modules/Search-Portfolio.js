@@ -3,20 +3,17 @@ import axios from 'axios'
 class Search {
   // 1. describe and create/initiate our object
   constructor() {
-    this.addSearchHTML()
-    this.resultsDiv = document.querySelector('#search-results')
-    this.searchOverlay = document.querySelector('.search-overlay')
+    this.resultsDiv = document.querySelector('#portfolio-search')
+    this.searchButton = document.querySelector('#portfolio-search-trigger')
     this.searchData = document.querySelector('#data')
-    this.SearchEquipe = document.querySelector('#equipe')
-    this.SearchProjeto = document.querySelector('#projeto')
+    this.searchEquipe = document.querySelector('#equipe')
+    this.searchProjeto = document.querySelector('#projeto')
     this.searchField = {
-      equipe: this.SearchEquipe,
-      projeto: this.SearchProjeto,
-      data: this.searchData
+      projeto: this.searchProjeto.value,
+      equipe: this.searchEquipe.value,
+      data: this.searchData.value
     }
-
     this.events()
-    this.isOverlayOpen = false
     this.isSpinnerVisible = false
     this.previousValue
     this.typingTimer
@@ -24,7 +21,8 @@ class Search {
 
   // 2. events
   events() {
-    this.searchField.addEventListener('keyup', () => this.typingLogic())
+    //this.searchField.addEventListener('keyup', () => this.typingLogic())
+    this.searchButton.addEventListener('click', () => this.getResults())
   }
 
   // 3. methods (function, action...)
@@ -54,40 +52,44 @@ class Search {
   }
 
   async getResults() {
+    document.querySelector('.portfolio-all').classList.add('d-none')
     try {
       const response = await axios.get(
         data.root_url +
           '/wp-json/caixola/v1/search?term=' +
-          this.searchField.value
+          this.searchProjeto.value +
+          '&authorName=' +
+          this.searchEquipe.value +
+          '&projectDate=' +
+          this.searchData.value
       )
       const results = response.data
 
       this.resultsDiv.innerHTML = `
-        <div class="row">
-          <div class="col-12">
-            <h2>Resultados obtidos</h2>
-            ${
-              results.portfolio.length
-                ? '<ul class="results-list">'
-                : '<p>Não há resultados</p>'
-            }
-              ${results.portfolio
-                .map(
-                  item =>
-                    `<li>
-                      <a href="${item.permalink}">
-                        ${item.title}
-                      </a>  
-                      ${
-                        item.postType == 'criado'
-                          ? `por ${item.authorName}`
-                          : ''
-                      }
-                    </li>`
-                )
-                .join('')}
-            ${results.portfolio.length ? '</ul>' : ''}
-          </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 align-items-center">
+          ${
+            results.portfolio.length
+              ? ''
+              : '<div class="col">Nenhum resultado encontrado.</div>'
+          }
+            ${results.portfolio
+              .map(
+                item =>
+                  `<div class="col">
+                    <a href="${item.permalink}">
+                      <div class="card portfolio-card">
+                        <div class="card-body bg-portfolio-card" style="background-image: url(<?php echo $cardImage; ?>);">
+                          <img src="<?php ?>" alt="">
+                          <h5 class="card-title">${item.title}</h5>
+                        </div>
+                        <div class="card-footer">
+                          ${item.projectType}
+                        </div>
+                      </div>
+                    </a>
+                  </div>`
+              )
+              .join('')}
         </div>
       `
       this.isSpinnerVisible = false

@@ -2,10 +2,14 @@
 //replace: Caixola with your theme name
 //replace: caixola with your theme path url
 //add: in the main query, the post types with your post types
+function removeAccents($string) {
+  return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($string, ENT_QUOTES, 'UTF-8'))), ' '));
+}
+
 function CaixolaRegisterSearch() {
   register_rest_route('caixola/v1', 'search', array(
     'methods' => WP_REST_SERVER::READABLE, // GET request (crud)
-    'callback' => 'CaixolaSearchResults'
+    'callback' => 'caixola_search'
   )); // namespace, route, array of options
 
   register_rest_route('caixola/v1', 'portfolio', array(
@@ -15,10 +19,11 @@ function CaixolaRegisterSearch() {
 }
 add_action('rest_api_init', 'CaixolaRegisterSearch');
 
-function CaixolaSearchResults($dataSearch) {
+function CaixolaSearchResults(WP_REST_Request $dataSearch) {
   $mainQuery = new WP_QUERY(array(
     'post_type' => array('post', 'page', 'portfolio'),
-    's' => sanitize_text_field($dataSearch['term'])
+    //'s' => sanitize_text_field($dataSearch['term']),
+    'posts_per_page' => -1
   ));
 
   $results = array(
@@ -50,94 +55,114 @@ function CaixolaSearchResults($dataSearch) {
       ));
     }
   }
+  wp_reset_postdata();
   return $results;
 }
 
-function CaixolaPortfolioSearchResults(WP_REST_Request $dataSearch) {
-  $mainQuery = new WP_QUERY(array(
+function caixola_search( WP_REST_Request $request ) {
+  $dataSearch = $request->get_params();
+  $termo = isset($dataSearch['term']) ? sanitize_text_field($dataSearch['term']) : '';
+
+  $args = array(
+    'post_type' => array('post', 'page', 'portfolio'),
+    's' => $termo,
+    'posts_per_page' => -1,
+  );
+
+  $mainQuery = new WP_Query( $args );
+  $results = array(
+    'generalInfo' => array(),
+    'portfolio' => array()
+  );
+
+  if ( $mainQuery->have_posts() ) {
+    while ( $mainQuery->have_posts() ) {
+      $mainQuery->the_post();
+
+      if (get_post_type() == 'post' OR get_post_type() == 'page') {
+        array_push($results['generalInfo'], array(
+          'title' => get_the_title(),
+          'permalink' => get_the_permalink() ,
+          'postType' => get_post_type(),
+          'authorName' => get_the_author()
+        ));
+      }
+
+      $authorName = isset($dataSearch['authorName']) ? sanitize_text_field($dataSearch['authorName']) : '';
+      $projectDate = isset($dataSearch['projectDate']) ? sanitize_text_field($dataSearch['projectDate']) : '';
+      $projectDateFormatted = '';
+      
+      if (!empty($projectDate)) {
+        $projectDateObj = DateTime::createFromFormat('d/m/Y', $projectDate);
+        $projectDateFormatted = $projectDateObj->format('Y-m-d');
+      }
+
+      if(get_post_type() == 'portfolio') {
+        $Date = new DateTime(get_field('data'));
+        $equipeparticipante = get_field('equipeparticipante');
+        $categoria = get_field('categoria');
+        
+        $authorMatch = empty($authorName) || strtolower($authorName) == strtolower($equipeparticipante);
+        //$dateMatch = empty($projectDate) || $Date->format('d/m/Y') == $projectDate;
+        $dateMatch = empty($projectDate) || $Date->format('Y-m-d') == $projectDateFormatted;
+
+        if ($authorMatch && $dateMatch) {
+          array_push($results['portfolio'], array(
+            'title' => get_the_title(),
+            'permalink' => get_the_permalink(),
+            'authorName' => $equipeparticipante,
+            'projectDate' => $Date->format('d/m/Y'),
+            'projectType' => $categoria,
+          ));
+        }
+      }
+    }
+  }
+
+  wp_reset_postdata();
+  return rest_ensure_response( $results );
+}
+
+function CaixolaPortfolioSearchResults($request) {
+  $dataSearch = $request->get_params();
+  $termo = isset($dataSearch['term']) ? sanitize_text_field($dataSearch['term']) : '';
+
+  $args = array(
     'post_type' => array('portfolio'),
-    'meta_query' => array(
-      // array(
-      //   'key' => 'equipeparticipante',
-      //   'compare' => 'LIKE',
-      //   'value' => get_query_var('equipe')
-      // ),
-      // array(
-      //   'key' => 'data',
-      //   'compare' => 'LIKE',
-      //   'value' => get_query_var('data')
-      // ),
-      array(
-        'key' => 'categoria',
-        'compare' => 'LIKE',
-        'value' => $dataSearch->get_param('categoria')
-      ),
-      'relation' => 'OR'
-    )
-  ));
+    's' => $termo,
+    'posts_per_page' => -1,
+  );
+
+  $mainQuery = new WP_Query( $args );
 
   $results = array();
 
   while($mainQuery->have_posts()) {
     $mainQuery->the_post();
+      $authorName = isset($dataSearch['authorName']) ? sanitize_text_field($dataSearch['authorName']) : '';
+      $projectDate = isset($dataSearch['projectDate']) ? sanitize_text_field($dataSearch['projectDate']) : '';
+      $projectDateFormatted = '';
+      
+      if (!empty($projectDate)) {
+        $projectDateObj = DateTime::createFromFormat('d/m/Y', $projectDate);
+        $projectDateFormatted = $projectDateObj->format('Y-m-d');
+      }
       $Date = new DateTime(get_field('data'));
-      //if ($request->get_param('categoria') == get_field('categoria')) {
+      $equipeparticipante = get_field('equipeparticipante');
+      $categoria = get_field('categoria');
+      
+      $authorMatch = empty($authorName) || strtolower($authorName) == strtolower($equipeparticipante);
+      $dateMatch = empty($projectDate) || $Date->format('Y-m-d') == $projectDateFormatted;
+
+      if ($authorMatch && $dateMatch) {
         array_push($results, array(
           'title' => get_the_title(),
           'permalink' => get_the_permalink(),
-          'authorName' => get_field('equipeparticipante'),
-          'projectDate' => $Date->format('d/m/y'),
-          'projectType' => get_field('categoria'),
+          'authorName' => $equipeparticipante,
+          'projectDate' => $Date->format('d/m/Y'),
+          'projectType' => $categoria,
         ));
-      //}
+      }     
   }
-
-  // if($results) {
-  //   $portfolioMetaQuery = array('relation' => 'OR');
-
-  //   foreach($results as $item) {
-  //     array_push($portfolioMetaQuery, array(
-  //       'key' => 'related_portfolio',
-  //       'compare' => 'LIKE',
-  //       'value' => '"' . $item['id'] . '"' // get_the_ID() is the id of the current program
-  //     ));
-  //   }
-
-  //   $programRelationship = new WP_QUERY(array(
-  //     'post_type' => array('professor', 'event'),
-  //     'meta_query' => $portfolioMetaQuery
-  //   ));
-
-  //   while($programRelationship->have_posts()) {
-  //     $programRelationship->the_post();
-
-  //     if (get_post_type() == 'professor') {
-  //       array_push($results['professors'], array(
-  //         'title' => get_the_title(),
-  //         'permalink' => get_the_permalink() ,
-  //         'image' => get_the_post_thumbnail_url(0, 'professorLandscape') 
-  //       ));
-  //     }
-
-  //     if (get_post_type() == 'event') {
-  //       $eventDate = new DateTime(get_field('event_date'));
-  //       $description = null;
-  //       if(has_excerpt()) {
-  //         $description = get_the_excerpt();
-  //       }else {
-  //         $description = wp_trim_words(get_the_content(), 18);
-  //       } 
-  //       array_push($results['events'], array(
-  //         'title' => get_the_title(),
-  //         'permalink' => get_the_permalink(),
-  //         'date' => $eventDate->format('d/m/y'),
-  //         'description' => $description
-  //       ));
-  //     }
-  //   }
-
-  //   $results['professors'] = array_values(array_unique($results['professors'], SORT_REGULAR));  
-  //   $results['events'] = array_values(array_unique($results['events'], SORT_REGULAR)); 
-  // }
   return $results;
 }

@@ -31,12 +31,14 @@
             <input type="text" class="form-control caixola-form-control" id="projeto" placeholder="Ex: Vestibular">
           </div>
           <div class="col-1 d-flex align-items-center">
-            <button type="submit" class="btn btn-dark border-0">Pesquisar</button>
+            <button type="submit" class="btn btn-dark border-0" id="portfolio-search-trigger">Pesquisar</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 align-items-center mt-5">
+    <div id="portfolio-search" class="mt-5">
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 align-items-center portfolio-all mt-5">
       <?php while(have_posts()) {
         the_post();
         $cardImage = get_field('imagem_de_fundo');
@@ -54,8 +56,12 @@
             </div>
           </a>
         </div>
-      <?php } ?>
+      <?php }
+       ?>
     </div>
+    <div class="nav-previous alignleft"><?php previous_posts_link( 'Older posts' ); ?></div>
+    <div class="nav-next alignright"><?php next_posts_link( 'Newer posts' ); ?></div>
+
   </div>
 </div>
 <?php get_footer(); ?>
