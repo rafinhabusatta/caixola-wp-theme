@@ -59,9 +59,11 @@
       <?php }
        ?>
     </div>
-    <div class="nav-previous alignleft"><?php previous_posts_link( 'Older posts' ); ?></div>
-    <div class="nav-next alignright"><?php next_posts_link( 'Newer posts' ); ?></div>
-
+    <div class="row">
+      <div class="col-12 text-center">
+        <?php echo paginate_links(); ?>
+      </div>
+    </div>
   </div>
 </div>
 <?php get_footer(); ?>
